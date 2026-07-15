@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaiishnavi S — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#10161A;
+    --panel:#161E23;
+    --panel-2:#1B2429;
+    --copper:#C17B4E;
+    --copper-bright:#E3A374;
+    --teal:#5FB8B0;
+    --text:#EDEAE2;
+    --text-mute:#8FA0A6;
+    --line:#2A343A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+
+  /* background grid texture */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:36px 36px;
+    opacity:0.25;
+  }
+
+  .wrap{max-width:900px; margin:0 auto; padding:0 24px;}
+
+  /* trace rail */
+  .rail{
+    position:fixed; top:0; bottom:0; left:calc(50% - 450px + 24px);
+    width:1px; background:var(--line); z-index:0;
+  }
+  .rail::before{
+    content:''; position:absolute; left:-1.5px; top:0; width:4px; height:80px;
+    background:var(--copper); border-radius:2px;
+    box-shadow:0 0 12px 2px rgba(193,123,78,0.5);
+    animation:travel 8s linear infinite;
+  }
+  @keyframes travel{
+    0%{top:0;} 100%{top:100%;}
+  }
+  @media (max-width:960px){.rail{display:none;}}
+
+  .node{
+    position:relative;
+  }
+  .node::before{
+    content:''; position:absolute; left:-24px; top:8px; width:9px; height:9px;
+    border-radius:50%; background:var(--copper); border:2px solid var(--bg);
+    box-shadow:0 0 0 1px var(--copper);
+  }
+  @media (max-width:960px){.node::before{display:none;}}
+
+  /* header / hero */
+  header{padding:64px 0 40px; border-bottom:1px solid var(--line);}
+  .chip-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:0.08em; color:var(--text-mute);
+    border:1px solid var(--line); padding:5px 10px; border-radius:3px;
+    margin-bottom:24px;
+  }
+  .led{
+    width:7px; height:7px; border-radius:50%; background:var(--teal);
+    box-shadow:0 0 6px 2px rgba(95,184,176,0.7);
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.35;}}
+
+  h1{
+    font-size:44px; font-weight:600; letter-spacing:-0.01em; line-height:1.15;
+    margin-bottom:8px;
+  }
+  .role{
+    font-family:'IBM Plex Mono', monospace; color:var(--copper-bright);
+    font-size:16px; margin-bottom:20px;
+  }
+  .abstract{color:var(--text-mute); max-width:560px; font-size:15px;}
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:24px; margin-top:28px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-mute);
+  }
+  .meta-row span b{color:var(--text); display:block; font-family:'IBM Plex Sans'; font-size:13px; margin-top:2px;}
+
+  /* sections */
+  section{padding:56px 0; border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.14em;
+    color:var(--copper); text-transform:uppercase; margin-bottom:6px;
+  }
+  h2{font-size:24px; font-weight:600; margin-bottom:28px;}
+
+  /* spec table (skills) */
+  .spec-table{width:100%; border-collapse:collapse;}
+  .spec-table tr{border-bottom:1px solid var(--line);}
+  .spec-table tr:last-child{border-bottom:none;}
+  .spec-table td{padding:12px 8px; font-size:14px;}
+  .spec-table td:first-child{
+    font-family:'IBM Plex Mono', monospace; color:var(--text-mute); width:38%;
+  }
+  .spec-table td:last-child{color:var(--text);}
+
+  /* projects */
+  .project{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px;
+    padding:24px 26px; margin-bottom:20px;
+  }
+  .project-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .project-head h3{font-size:17px; font-weight:600;}
+  .project-tag{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--teal); border:1px solid var(--teal); padding:2px 8px; border-radius:3px;}
+  .project p{color:var(--text-mute); font-size:14px; margin-bottom:14px;}
+  .pins{display:flex; flex-wrap:wrap; gap:8px;}
+  .pin{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-mute);
+    border:1px solid var(--line); padding:4px 9px; border-radius:3px;
+  }
+
+  /* timeline */
+  .tl-item{display:flex; gap:20px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-year{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--copper); min-width:90px;}
+  .tl-body b{display:block; font-size:15px; margin-bottom:3px;}
+  .tl-body span{color:var(--text-mute); font-size:13px;}
+
+  /* certs */
+  .cert-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+  @media (max-width:600px){.cert-grid{grid-template-columns:1fr;}}
+  .cert{
+    border:1px solid var(--line); border-radius:5px; padding:14px 16px;
+    font-size:13px; color:var(--text-mute);
+  }
+  .cert b{color:var(--text); display:block; font-size:14px; margin-bottom:2px; font-weight:500;}
+
+  /* contact / footer as connector pinout */
+  footer{padding:56px 0 72px;}
+  .pinout{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden;
+  }
+  .pin-cell{background:var(--panel); padding:18px 20px;}
+  .pin-cell .label{font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--copper); letter-spacing:0.1em; margin-bottom:6px;}
+  .pin-cell .value{font-size:14px;}
+  .pin-cell a:hover{color:var(--copper-bright);}
+  .footnote{margin-top:28px; font-size:12px; color:var(--text-mute); font-family:'IBM Plex Mono', monospace;}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="rail"></div>
+
+<div class="wrap">
+
+  <header class="node">
+    <div class="chip-tag"><span class="led"></span> OPEN TO WORK — HARDWARE &amp; SOFTWARE ROLES</div>
+    <h1>Vaiishnavi S</h1>
+    <div class="role">Electrical &amp; Electronics Engineering Graduate · Embedded Systems &amp; Software</div>
+    <p class="abstract">Fresh EEE graduate from Coimbatore, Tamil Nadu, working across the full stack of a device — circuit, sensor, and the code that drives it. Equally comfortable on a breadboard or in a codebase, and open to roles on either side.</p>
+    <div class="meta-row">
+      <span>LOCATION<b>Coimbatore, Tamil Nadu</b></span>
+      <span>DEGREE<b>B.E. Electrical &amp; Electronics Engineering</b></span>
+      <span>GRAD. YEAR<b>2026</b></span>
+    </div>
+  </header>
+
+  <section class="node" id="skills">
+    <div class="eyebrow">Core specifications</div>
+    <h2>Skills</h2>
+    <table class="spec-table">
+      <tr><td>Languages</td><td>Python, C++</td></tr>
+      <tr><td>Embedded / hardware</td><td>Arduino, sensor integration (PIR, gesture), circuit prototyping</td></tr>
+      <tr><td>Connectivity</td><td>IoT fundamentals</td></tr>
+      <tr><td>Foundations</td><td>Data Structures &amp; Algorithms, Object-Oriented Programming</td></tr>
+      <tr><td>Data / web</td><td>SQL basics, HTML basics, Excel</td></tr>
+    </table>
+  </section>
+
+  <section class="node" id="projects">
+    <div class="eyebrow">Build log</div>
+    <h2>Projects</h2>
+
+    <div class="project">
+      <div class="project-head">
+        <h3>Automatic Smart Door Lock System</h3>
+        <span class="project-tag">HARDWARE</span>
+      </div>
+      <p>A motion-aware access system that senses approach and manages locking automatically, removing the need for manual keys.</p>
+      <div class="pins">
+        <span class="pin">Arduino</span>
+        <span class="pin">PIR sensor</span>
+        <span class="pin">Embedded C</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <h3>Assistive Communication Device</h3>
+        <span class="project-tag">ACCESSIBILITY</span>
+      </div>
+      <p>A hand-gesture recognition device built to help deaf users communicate more easily, translating gestures into readable output.</p>
+      <div class="pins">
+        <span class="pin">Gesture sensing</span>
+        <span class="pin">Arduino</span>
+        <span class="pin">Assistive tech</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="node" id="experience">
+    <div class="eyebrow">Signal path</div>
+    <h2>Experience &amp; education</h2>
+    <div>
+      <div class="tl-item">
+        <div class="tl-year">2022–2026</div>
+        <div class="tl-body">
+          <b>B.E. Electrical &amp; Electronics Engineering</b>
+          <span>Paavai Engineering College</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">Internship</div>
+        <div class="tl-body">
+          <b>Web Development Intern</b>
+          <span>MST SOFT — 3 months</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="node" id="certifications">
+    <div class="eyebrow">Verified</div>
+    <h2>Certifications &amp; activities</h2>
+    <div class="cert-grid">
+      <div class="cert"><b>NPTEL — Internet of Things</b>12-week certification</div>
+      <div class="cert"><b>Python Programming</b>Certification</div>
+      <div class="cert"><b>EV Assembly Workshop</b>Hands-on training</div>
+      <div class="cert"><b>Arduino &amp; Sensors Workshop</b>Hands-on training</div>
+      <div class="cert"><b>Women's Hackathon</b>Participant</div>
+    </div>
+  </section>
+
+  <footer class="node" id="contact">
+    <div class="eyebrow">Interface</div>
+    <h2>Get in touch</h2>
+    <div class="pinout">
+      <div class="pin-cell">
+        <div class="label">EMAIL</div>
+        <div class="value"><a href="mailto:vaiishnavi7605@gmail.com">vaiishnavi7605@gmail.com</a></div>
+      </div>
+      <div class="pin-cell">
+        <div class="label">PHONE</div>
+        <div class="value">+91 87783 18015</div>
+      </div>
+      <div class="pin-cell">
+        <div class="label">LINKEDIN</div>
+        <div class="value"><a href="https://linkedin.com/in/vaiishnavis" target="_blank" rel="noopener">linkedin.com/in/vaiishnavis</a></div>
+      </div>
+      <div class="pin-cell">
+        <div class="label">GITHUB</div>
+        <div class="value"><a href="https://github.com/vaiishnavis" target="_blank" rel="noopener">github.com/vaiishnavis</a></div>
+      </div>
+    </div>
+    <div class="footnote">VS · EEE · 2026 — REV 1.0</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
